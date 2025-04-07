@@ -9,22 +9,26 @@ app = FastAPI()
 async def obtener_cuotas(equipo: str = Query(...), deporte: str = Query("futbol")):
     try:
         async with async_playwright() as p:
-    browser = await p.chromium.launch(headless=True, args=["--no-sandbox", "--disable-gpu"])
-    context = await browser.new_context()
-    page = await context.new_page()
+            browser = await p.chromium.launch(
+                headless=True, 
+                args=["--no-sandbox", "--disable-gpu"]
+            )
+            context = await browser.new_context()
+            page = await context.new_page()
 
-    await page.goto("https://1xbet.com")
-    await page.wait_for_timeout(2000)
+            # Ir a la web de 1xBet (ajustar si usas una URL específica por deporte)
+            await page.goto("https://1xbet.com")
+            await page.wait_for_timeout(3000)  # Esperar 3 segundos
 
-    cuotas = {
-        "ganador_local": 1.85,
-        "empate": 3.25,
-        "ganador_visita": 4.00
-    }
+            # Simulación (aquí iría el scraping real cuando sepas el selector exacto)
+            cuotas = {
+                "ganador_local": 1.85,
+                "empate": 3.25,
+                "ganador_visita": 4.00
+            }
 
-    await browser.close()
-    return {"equipo": equipo, "cuotas": cuotas}
-
+            await browser.close()
+            return {"equipo": equipo, "deporte": deporte, "cuotas": cuotas}
 
     except Exception as e:
         return JSONResponse(
