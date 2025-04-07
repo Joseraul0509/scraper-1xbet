@@ -1,7 +1,6 @@
 from fastapi import FastAPI, Query
 from fastapi.responses import JSONResponse
 from playwright.async_api import async_playwright
-import asyncio
 
 app = FastAPI()
 
@@ -16,11 +15,9 @@ async def obtener_cuotas(equipo: str = Query(...), deporte: str = Query("futbol"
             context = await browser.new_context()
             page = await context.new_page()
 
-            # Ir a la web de 1xBet (ajustar si usas una URL específica por deporte)
-            await page.goto("https://1xbet.com")
-            await page.wait_for_timeout(3000)  # Esperar 3 segundos
+            await page.goto("https://1xbet.com", timeout=60000)
+            await page.wait_for_timeout(3000)
 
-            # Simulación (aquí iría el scraping real cuando sepas el selector exacto)
             cuotas = {
                 "ganador_local": 1.85,
                 "empate": 3.25,
