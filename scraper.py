@@ -9,18 +9,22 @@ app = FastAPI()
 async def obtener_cuotas(equipo: str = Query(...), deporte: str = Query("futbol")):
     try:
         async with async_playwright() as p:
-            browser = await p.chromium.launch(headless=True)
-            context = await browser.new_context()
-            page = await context.new_page()
+    browser = await p.chromium.launch(headless=True, args=["--no-sandbox", "--disable-gpu"])
+    context = await browser.new_context()
+    page = await context.new_page()
 
-            await page.goto("https://1xbet.com")
-            await page.wait_for_timeout(2000)
+    await page.goto("https://1xbet.com")
+    await page.wait_for_timeout(2000)
 
-            cuotas = {
-                "ganador_local": 1.85,
-                "empate": 3.25,
-                "ganador_visita": 4.00
-            }
+    cuotas = {
+        "ganador_local": 1.85,
+        "empate": 3.25,
+        "ganador_visita": 4.00
+    }
+
+    await browser.close()
+    return {"equipo": equipo, "cuotas": cuotas}
+
 
             await browser.close()
             return {"equipo": equipo, "cuotas": cuotas}
