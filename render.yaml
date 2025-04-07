@@ -5,12 +5,10 @@ services:
     plan: free
     buildCommand: |
       pip install -r requirements.txt
-      python -m playwright install chromium
+      python -m playwright install --with-deps chromium
     startCommand: uvicorn scraper:app --host 0.0.0.0 --port 10000
     envVars:
       - key: PLAYWRIGHT_BROWSERS_PATH
         value: /tmp/playwright
       - key: PYTHONUNBUFFERED
         value: "1"
-      - key: PATH
-        value: /tmp/playwright/chromium-1161/chrome-linux:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
