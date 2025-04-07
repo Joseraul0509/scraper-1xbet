@@ -3,8 +3,12 @@ services:
     name: scraper-1xbet
     env: python
     plan: free
-    buildCommand: pip install -r requirements.txt && playwright install chromium
+    buildCommand: |
+      pip install -r requirements.txt
+      python -m playwright install chromium
     startCommand: uvicorn scraper:app --host 0.0.0.0 --port 10000
     envVars:
       - key: PLAYWRIGHT_BROWSERS_PATH
         value: /tmp/playwright
+      - key: PYTHONUNBUFFERED
+        value: "1"
