@@ -1,3 +1,5 @@
 fastapi
-uvicorn
+uvicorn[standard]
 playwright
+beautifulsoup4
+requests
