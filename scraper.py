@@ -9,7 +9,7 @@ async def obtener_cuotas(equipo: str = Query(...), deporte: str = Query("futbol"
     try:
         async with async_playwright() as p:
             browser = await p.chromium.launch(
-                headless=True, 
+                headless=True,
                 args=["--no-sandbox", "--disable-gpu"]
             )
             context = await browser.new_context()
