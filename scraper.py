@@ -26,9 +26,6 @@ async def obtener_cuotas(equipo: str = Query(...), deporte: str = Query("futbol"
     return {"equipo": equipo, "cuotas": cuotas}
 
 
-            await browser.close()
-            return {"equipo": equipo, "cuotas": cuotas}
-
     except Exception as e:
         return JSONResponse(
             status_code=500,
