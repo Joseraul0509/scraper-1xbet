@@ -12,3 +12,5 @@ services:
         value: /tmp/playwright
       - key: PYTHONUNBUFFERED
         value: "1"
+      - key: PATH
+        value: /tmp/playwright/chromium-1161/chrome-linux:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
