@@ -1,43 +1,35 @@
 from fastapi import FastAPI, Query
-from fastapi.middleware.cors import CORSMiddleware
-from playwright.sync_api import sync_playwright
+from fastapi.responses import JSONResponse
+from playwright.async_api import async_playwright
+import asyncio
 
 app = FastAPI()
 
-# CORS para permitir peticiones externas (ej. desde Hostinger)
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-@app.get("/")
-def home():
-    return {"mensaje": "Microservicio 1xBet activo"}
-
 @app.get("/api/cuotas")
-def obtener_cuotas(equipo: str = Query(...)):
+async def obtener_cuotas(equipo: str = Query(...), deporte: str = Query("futbol")):
     try:
-        with sync_playwright() as p:
-            browser = p.chromium.launch(headless=True)
-            page = browser.new_page()
-            url = f"https://1xbet.com/es/search/?query={equipo}"
-            page.goto(url, timeout=15000)
-            page.wait_for_timeout(5000)  # esperar carga de cuotas
+        async with async_playwright() as p:
+            browser = await p.chromium.launch(headless=True)
+            context = await browser.new_context()
+            page = await context.new_page()
 
-            html = page.content()
-            browser.close()
+            # Aquí usarías una URL real de 1xBet
+            await page.goto("https://1xbet.com")
 
-            # Aquí simulas resultados (puedes luego extraer datos reales del HTML con BeautifulSoup)
+            await page.wait_for_timeout(2000)  # Espera 2 segundos (ajusta si es necesario)
+
+            # Simulación de búsqueda (ajustar a lo real si scrapeas)
             cuotas = {
                 "ganador_local": 1.85,
                 "empate": 3.25,
                 "ganador_visita": 4.00
             }
 
+            await browser.close()
             return {"equipo": equipo, "cuotas": cuotas}
 
     except Exception as e:
-        return {"error": f"No se pudo acceder a 1xBet: {str(e)}"}
+        return JSONResponse(
+            status_code=500,
+            content={"error": f"No se pudo acceder a 1xBet: {str(e)}"}
+        )
