@@ -1,8 +1,7 @@
 #!/bin/bash
 
-echo "Instalando dependencias del sistema..."
-apt-get update
-apt-get install -y wget curl unzip fonts-liberation libnss3 libatk-bridge2.0-0 libxss1 libgtk-3-0 libasound2 libgbm-dev
+# Crear carpeta de navegadores en /tmp/playwright
+mkdir -p /tmp/playwright
 
-echo "Instalando Playwright Chromium..."
-playwright install chromium
+# Descargar los navegadores en esa carpeta
+PLAYWRIGHT_BROWSERS_PATH=/tmp/playwright npx playwright install chromium
