@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Query
 from fastapi.responses import JSONResponse
 from playwright.async_api import async_playwright
+import asyncio
 
 app = FastAPI()
 
@@ -15,9 +16,11 @@ async def obtener_cuotas(equipo: str = Query(...), deporte: str = Query("futbol"
             context = await browser.new_context()
             page = await context.new_page()
 
+            # Acceder a la web
             await page.goto("https://1xbet.com", timeout=60000)
-            await page.wait_for_timeout(3000)
+            await page.wait_for_timeout(5000)
 
+            # Simulación temporal de scraping controlado
             cuotas = {
                 "ganador_local": 1.85,
                 "empate": 3.25,
@@ -25,7 +28,12 @@ async def obtener_cuotas(equipo: str = Query(...), deporte: str = Query("futbol"
             }
 
             await browser.close()
-            return {"equipo": equipo, "deporte": deporte, "cuotas": cuotas}
+
+            return {
+                "equipo": equipo,
+                "deporte": deporte,
+                "cuotas": cuotas
+            }
 
     except Exception as e:
         return JSONResponse(
@@ -33,6 +41,7 @@ async def obtener_cuotas(equipo: str = Query(...), deporte: str = Query("futbol"
             content={"error": f"No se pudo acceder a 1xBet: {str(e)}"}
         )
 
+# Si quieres probar localmente
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("scraper:app", host="0.0.0.0", port=10000)
