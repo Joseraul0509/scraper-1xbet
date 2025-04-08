@@ -7,7 +7,4 @@ services:
       pip install -r requirements.txt
       chmod +x install_playwright.sh
       ./install_playwright.sh
-    startCommand: PLAYWRIGHT_BROWSERS_PATH=/tmp/playwright uvicorn scraper:app --host 0.0.0.0 --port 10000
-    envVars:
-      - key: PLAYWRIGHT_BROWSERS_PATH
-        value: /tmp/playwright
+    startCommand: uvicorn scraper:app --host 0.0.0.0 --port 10000
