@@ -5,10 +5,9 @@ services:
     plan: free
     buildCommand: |
       pip install -r requirements.txt
-      python -m playwright install --with-deps chromium
+      chmod +x install_playwright.sh
+      ./install_playwright.sh
     startCommand: uvicorn scraper:app --host 0.0.0.0 --port 10000
     envVars:
       - key: PLAYWRIGHT_BROWSERS_PATH
         value: /tmp/playwright
-      - key: PYTHONUNBUFFERED
-        value: "1"
